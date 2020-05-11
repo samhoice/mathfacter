@@ -1,0 +1,19 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: stable
+    hooks:
+      - id: black
+        exclude: migrations
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: debug-statements
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: flake8
+        exclude: settings|migrations
+        language_version: python3.7
+      - id: trailing-whitespace
