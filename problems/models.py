@@ -6,8 +6,13 @@ import random
 class Rule(models.Model):
     # for brevity, min is 0
     allowed_ops = models.CharField(max_length=4)
+
     left = models.IntegerField()
+    left_exact = models.BooleanField()
     right = models.IntegerField()
+    right_exact = models.BooleanField()
+
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{} {} {}".format(self.left, self.allowed_ops, self.right)
