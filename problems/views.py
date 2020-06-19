@@ -52,5 +52,6 @@ class ProblemViewSet(viewsets.ModelViewSet):
         calculation = rule.question_from_rule()
         problem = Problem.objects.create(user=request.user, calculation=calculation)
 
+        # should make this read only somehow...
         serializer = self.get_serializer(problem)
         return Response(serializer.data)

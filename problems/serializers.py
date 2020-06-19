@@ -28,7 +28,7 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Problem
-        fields = ["calculation", "value", "correct", "answered"]
+        fields = ["url", "calculation", "value", "correct", "answered"]
         read_only_fields = ["calculation", "correct", "answered"]
 
     def update(self, instance, validated_data):
