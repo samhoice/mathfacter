@@ -30,25 +30,10 @@ class RuleViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class CalculationViewSet(viewsets.ModelViewSet):
+class CalculationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Calculation.objects.all()
-    serializer_class = QuestionSerializer
+    serializer_class = CalculationSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-    @action(detail=True, methods=["get"])
-    def problem(self, request, *args, **kwargs):
-        """ endpoint for getting a question
-
-        """
-        user = request.user
-
-        session = user.mathsession_set.latest("created")
-        rule = session.rules.latest("created")
-        calculation = rule.question_from_rule()
-        problem = Problem.objects.create(user=request.user, calculation=calculation)
-
-        serializer = self.get_serializer(problem)
-        return Response(serializer.data)
 
 
 class ProblemViewSet(viewsets.ModelViewSet):

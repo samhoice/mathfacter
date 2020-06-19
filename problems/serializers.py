@@ -20,6 +20,7 @@ class CalculationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Calculation
         fields = ["operation", "left_hand", "right_hand", "result"]
+        read_only_fields = ["operation", "left_hand", "right_hand", "result"]
 
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
@@ -28,7 +29,7 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Problem
         fields = ["calculation", "value", "correct", "answered"]
-        read_only_fields = ["correct", "answered"]
+        read_only_fields = ["calculation", "correct", "answered"]
 
     def update(self, instance, validated_data):
         if instance.answered:
