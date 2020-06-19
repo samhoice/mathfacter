@@ -22,7 +22,7 @@ class Rule(models.Model):
         right = random.randint(0, self.right)
         op = random.choice(self.allowed_ops)
 
-        q = Question.objects.get_or_create(
+        q = Calculation.objects.get_or_create(
             rule=self, operation=op, left_hand=left, right_hand=right
         )
 
@@ -31,7 +31,7 @@ class Rule(models.Model):
         return q[0]
 
 
-class Question(models.Model):
+class Calculation(models.Model):
     rule = models.ForeignKey(
         Rule, null=True, default=None, blank=True, on_delete=models.CASCADE
     )
@@ -53,16 +53,35 @@ class Question(models.Model):
             self.result = self.left_hand * self.right_hand
         elif self.operation == "/":
             if self.right_hand == 0:
-                self.result = None
+                # don't change
+                return
             else:
                 self.result = self.left_hand / self.right_hand
 
+        self.save()
 
-class Answer(models.Model):
+
+class Problem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    value = models.IntegerField()
+    calculation = models.ForeignKey(Calculation, on_delete=models.CASCADE)
+    value = models.IntegerField(default=0)
     correct = models.BooleanField(default=False)
+    answered = models.BooleanField(default=False)
+
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{}".format(self.value)
+
+
+class MathSession(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rules = models.ManyToManyField(Rule)
+
+    created = models.DateTimeField(auto_now_add=True)
+    ended = models.DateTimeField(null=True, default=None, blank=True)
+
+    def __str__(self):
+        return "{}'s session with {} rule(s)".format(
+            self.user.first_name, self.rules.count()
+        )

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Rule, Question, Answer
+from .models import Rule, Calculation, Problem
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -16,7 +16,30 @@ class RuleSerializer(serializers.HyperlinkedModelSerializer):
         fields = ["allowed_ops", "left", "right"]
 
 
-class QuestionSerializer(serializers.HyperlinkedModelSerializer):
+class CalculationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Question
+        model = Calculation
         fields = ["operation", "left_hand", "right_hand", "result"]
+
+
+class QuestionSerializer(serializers.HyperlinkedModelSerializer):
+    calculation = CalculationSerializer(read_only=True)
+
+    class Meta:
+        model = Problem
+        fields = ["calculation", "value", "correct", "answered"]
+        read_only_fields = ["correct", "answered"]
+
+    def update(self, instance, validated_data):
+        if instance.answered:
+            # TODO Error
+            return instance
+
+        instance.value = validated_data.get("value", instance.value)
+        if instance.value == instance.calculation.result:
+            instance.correct = True
+
+        instance.answered = True
+        instance.save()
+
+        return instance

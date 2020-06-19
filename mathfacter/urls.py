@@ -21,7 +21,8 @@ from problems import views
 router = routers.DefaultRouter()
 router.register(r"users", views.UserViewSet)
 router.register(r"rules", views.RuleViewSet)
-router.register(r"questions", views.QuestionViewSet)
+router.register(r"questions", views.CalculationViewSet)
+router.register(r"problems", views.ProblemViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
