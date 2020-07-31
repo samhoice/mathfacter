@@ -43,6 +43,8 @@ services:
     user: 'node'
     command: sh -c 'npm i && npm run start'
     working_dir: '/app'
+    # This prevents webpack from exiting
+    stdin_open: true
     logging:
       options:
         max-size: "500k"
