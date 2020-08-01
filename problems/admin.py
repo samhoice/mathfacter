@@ -4,7 +4,20 @@ from .models import Rule, Calculation, Problem, MathSession
 
 # Register your models here.
 
-admin.site.register(Rule)
+
+class RuleAdmin(admin.ModelAdmin):
+    list_display = [
+        "left",
+        "left_exact",
+        "right",
+        "right_exact",
+        "allowed_ops",
+        "created",
+    ]
+
+
+admin.site.register(Rule, RuleAdmin)
+
 admin.site.register(MathSession)
 
 
