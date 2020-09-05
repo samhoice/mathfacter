@@ -2,3 +2,6 @@
 *.sqlite3
 .env
 **/settings/local.py
+auto_inventory
+.vaultpass
+.vault_pass
