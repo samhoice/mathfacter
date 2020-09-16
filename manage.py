@@ -9,8 +9,6 @@ from pathlib import Path  # python3 only
 env_path = Path(".") / ".env"
 load_dotenv(dotenv_path=env_path)
 
-print(os.getenv("DJANGO_SETTINGS_MODULE"))
-
 
 def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mathfacter.settings")
