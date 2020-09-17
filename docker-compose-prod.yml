@@ -1,6 +1,7 @@
 version: '3.1'
 
 services:
+  # The DB is going to be installed on the server
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
