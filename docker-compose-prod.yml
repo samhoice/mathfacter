@@ -2,11 +2,8 @@ version: '3.1'
 
 services:
   # The DB is going to be installed on the server
-  # db:
   web:
     build: .
-    depends_on:
-      - db
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
@@ -20,9 +17,9 @@ services:
         max-file: "1"
 
   frontend:
-    image: node:10
+    image: node:12
     volumes:
-      - './frontend:/app'
+      - '../mathfacter-frontend:/app'
     networks:
       - mathfacter
     ports:
@@ -30,6 +27,8 @@ services:
     user: 'node'
     command: sh -c 'npm i && npm run start'
     working_dir: '/app'
+    # This prevents webpack from exiting
+    stdin_open: true
     logging:
       options:
         max-size: "500k"

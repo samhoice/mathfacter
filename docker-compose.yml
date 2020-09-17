@@ -4,7 +4,6 @@ services:
   db:
     image: mariadb
     command: --default-authentication-plugin=mysql_native_password
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: 2opkj2ertcznsskjxiojc
       MYSQL_DATABASE: mathfacter
@@ -33,21 +32,23 @@ services:
         max-size: "500k"
         max-file: "1"
 
-#  frontend:
-#    image: node:10
-#    volumes:
-#      - './frontend:/app'
-#    networks:
-#      - mathfacter
-#    ports:
-#      - '3000:3000'
-#    user: 'node'
-#    command: sh -c 'npm i && npm run start'
-#    working_dir: '/app'
-#    logging:
-#      options:
-#        max-size: "500k"
-#        max-file: "1"
+  frontend:
+    image: node:12
+    volumes:
+      - '../mathfacter-frontend:/app'
+    networks:
+      - mathfacter
+    ports:
+      - '3000:3000'
+    user: 'node'
+    command: sh -c 'npm i && npm run start'
+    working_dir: '/app'
+    # This prevents webpack from exiting
+    stdin_open: true
+    logging:
+      options:
+        max-size: "500k"
+        max-file: "1"
 
 networks:
   mathfacter:
