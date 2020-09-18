@@ -7,8 +7,8 @@ services:
     command: "python manage.py runserver 0.0.0.0:${APP_PORT}"
     volumes:
       - .:/code
-    ports:
-      - "80:${APP_PORT}"
+#    ports:
+#      - "80:${APP_PORT}"
     networks:
       - mathfacter
     logging:
@@ -22,8 +22,6 @@ services:
       - '../mathfacter-frontend:/app'
     networks:
       - mathfacter
-    ports:
-      - '3000:3000'
     user: 'node'
     command: sh -c 'npm i && npm run start'
     working_dir: '/app'
