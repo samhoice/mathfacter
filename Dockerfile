@@ -6,5 +6,5 @@ RUN mkdir /code/requirements
 WORKDIR /code
 COPY requirements/* /code/requirements/
 RUN pip install --upgrade pip
-RUN pip install -r requirements/dev.txt
+RUN pip install -r requirements/base.txt
 COPY . /code/

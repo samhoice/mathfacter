@@ -5,3 +5,4 @@ djangorestframework==3.11.0
 django-cors-headers==3.4.0
 django-rest-auth==0.9.5
 python-dotenv==0.14.0
+mysqlclient==2.0.1
