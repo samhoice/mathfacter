@@ -4,11 +4,11 @@ services:
   # The DB is going to be installed on the server
   web:
     build: .
-    command: "python manage.py runserver 0.0.0.0:${app_port}"
+    command: "python manage.py runserver 0.0.0.0:${APP_PORT}"
     volumes:
       - .:/code
     ports:
-      - "80:${app_port}"
+      - "80:${APP_PORT}"
     networks:
       - mathfacter
     logging:
