@@ -14,10 +14,22 @@ app_user: "{{ project_name }}"
 app_port: '8080'
 app_host: "localhost"
 
+mysql_root_home: /root
+mysql_root_username: root
+mysql_root_password: "{{ secrets_mysql_root_password }}"
+
+mysql_databases:
+  - name: "{{ project_name }}"
+
+mysql_users: 
+  - name: "{{ project_name }}"
+    host: "web"
+    password: "{{ secrets_mysql_app_password }}"
+
 database_name: "{{ project_name }}_database"
 database_username: "{{ project_name }}"
 database_password: "{{ secrets_mysql_app_password }}"
-database_host: 'localhost'
+database_host: "{{ server_ip }}"
 database_port: '3306'
 
 # Probably don't need to change anything below here
@@ -28,10 +40,6 @@ user_list:
   - { user: 'jon', key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSwi/Veg7l8IhbTB/Qxxme8Lpx1IH+c5wbJaE76+5AoreGiVfaLHOqJSo7kzRGjVqY0hSXg1Web623oACwQKTevPdoz8Nveif7Yz8YQ9olBjs17xdREHGDEGv0grTpVEIpq3h6BqrTWW9iJZjwMkV9EE9z3C/Mpd3SbCzal6d701uwVbTxhP2hM2pwOKb9dkXaXSvroas0AZJ8EM60UvLQ7zmXmPoo7jG+ePN2PTZz9e5oGDqt/L6FUIdXD8ykxooAwKfISOMqQ89clh3qezr/kRYIDYSFML2Lgi1tG5FuzeFc4WVIbtuQNvm726uCjdS6C8gJp7mzRSAiYGBhaFJD jon@LAPTOP-WINUBUNTU' }
 
 github_key: "{{ secrets_github_key }}"
-mysql_root_password: "{{ secrets_mysql_root_password }}"
-mysql_databases:
-  - name: "{{ project_name }}"
-
 project_dir: /srv/{{ project_name }}
 public_dir: "{{ project_dir }}/public"
 
