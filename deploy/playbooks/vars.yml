@@ -1,6 +1,7 @@
 ---
 # Must set these
-server_name: "{{ ansible_facts['ansible_default_ipv4']['address'] }}"
+server_ip: "{{ ansible_facts['default_ipv4']['address'] }}"
+server_name: "{{ server_ip }}"
 project_name: 'mathfacter'
 git_repos: 
   - name: 'mathfacter'
@@ -63,3 +64,6 @@ directories:
     mode: "0775"
     owner: "{{ app_user }}"
     group: "www-data"
+
+apt_packages:
+  - libmysqlclient-dev
