@@ -1,8 +1,12 @@
 *.pyc
 *.sqlite3
 .env
+.venv
 **/settings/local.py
 auto_inventory
 .vaultpass
 .vault_pass
 deploy
+tasks.py
+ansible.cfg
+requirements/deploy.txt
