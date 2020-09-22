@@ -3,7 +3,7 @@
 server_ip: "{{ ansible_facts['default_ipv4']['address'] }}"
 server_name: "{{ server_ip }}"
 project_name: 'mathfacter'
-git_repos: 
+git_repos:
   - name: 'mathfacter'
     repo: 'git@github.com:samhoice/mathfacter.git'
 
@@ -17,11 +17,13 @@ app_host: "localhost"
 mysql_root_home: /root
 mysql_root_username: root
 mysql_root_password: "{{ secrets_mysql_root_password }}"
+mysql_config_include_files:
+  - src: mathfacter.cnf
 
 mysql_databases:
   - name: "{{ project_name }}"
 
-mysql_users: 
+mysql_users:
   - name: "{{ project_name }}"
     host: "web"
     password: "{{ secrets_mysql_app_password }}"
