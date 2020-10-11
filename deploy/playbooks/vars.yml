@@ -8,31 +8,23 @@ git_repos:
     repo: 'git@github.com:samhoice/mathfacter.git'
 
 django_settings_module: 'mathfacter.settings.local'
+local_project_dir: '/home/jon/projects/'
 
 # Can set these
 app_user: "{{ project_name }}"
 app_port: '8080'
 app_host: "localhost"
 
-mysql_root_home: /root
-mysql_root_username: root
-mysql_root_password: "{{ secrets_mysql_root_password }}"
-mysql_config_include_files:
-  - src: mathfacter.cnf
-
-mysql_databases:
-  - name: "{{ project_name }}"
-
-mysql_users:
-  - name: "{{ project_name }}"
-    host: "web"
-    password: "{{ secrets_mysql_app_password }}"
-
 database_name: "{{ project_name }}_database"
 database_username: "{{ project_name }}"
 database_password: "{{ secrets_mysql_app_password }}"
 database_host: "{{ server_ip }}"
 database_port: '3306'
+
+use_s3: 'False'
+aws_access_key_id: "{{ secrets_aws_access_key_id }}"
+aws_secret_access_key: "{{ secrets_aws_secret_access_key }}"
+aws_storage_bucket_name: 'not-a-real-store'
 
 # Probably don't need to change anything below here
 django_secret_key: "{{ secrets_django_secret_key }}"
@@ -42,8 +34,13 @@ user_list:
   - { user: 'jon', key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSwi/Veg7l8IhbTB/Qxxme8Lpx1IH+c5wbJaE76+5AoreGiVfaLHOqJSo7kzRGjVqY0hSXg1Web623oACwQKTevPdoz8Nveif7Yz8YQ9olBjs17xdREHGDEGv0grTpVEIpq3h6BqrTWW9iJZjwMkV9EE9z3C/Mpd3SbCzal6d701uwVbTxhP2hM2pwOKb9dkXaXSvroas0AZJ8EM60UvLQ7zmXmPoo7jG+ePN2PTZz9e5oGDqt/L6FUIdXD8ykxooAwKfISOMqQ89clh3qezr/kRYIDYSFML2Lgi1tG5FuzeFc4WVIbtuQNvm726uCjdS6C8gJp7mzRSAiYGBhaFJD jon@LAPTOP-WINUBUNTU' }
 
 github_key: "{{ secrets_github_key }}"
+mysql_root_password: "{{ secrets_mysql_root_password }}"
+mysql_databases:
+  - name: "{{ project_name }}"
+
 project_dir: /srv/{{ project_name }}
 public_dir: "{{ project_dir }}/public"
+local_app_dir: "{{ local_project_dir }}/{{project_name}}"
 
 static_dir: "{{ project_dir }}/static"
 media_dir: "{{ project_dir }}/media"
@@ -77,3 +74,5 @@ directories:
 
 apt_packages:
   - libmysqlclient-dev
+  - mysql-client
+  - python3-venv

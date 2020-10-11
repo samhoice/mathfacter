@@ -85,3 +85,13 @@ class MathSession(models.Model):
         return "{}'s session with {} rule(s)".format(
             self.user.first_name, self.rules.count()
         )
+
+
+class FlashCard(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    front_text = models.TextField()
+    back_text = models.TextField()
+
+    def __str__(self):
+        return f"{self.front_text}"
