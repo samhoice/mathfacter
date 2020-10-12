@@ -18,7 +18,7 @@ app_host: "localhost"
 database_name: "{{ project_name }}_database"
 database_username: "{{ project_name }}"
 database_password: "{{ secrets_mysql_app_password }}"
-database_host: "{{ server_ip }}"
+database_host: "db"
 database_port: '3306'
 
 use_s3: 'False'
