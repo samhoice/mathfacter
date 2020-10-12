@@ -23,6 +23,7 @@ router.register(r"users", views.UserViewSet)
 router.register(r"rules", views.RuleViewSet)
 router.register(r"questions", views.CalculationViewSet)
 router.register(r"problems", views.ProblemViewSet)
+router.register(r"cards", views.FlashCardViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),

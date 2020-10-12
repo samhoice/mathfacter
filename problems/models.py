@@ -88,10 +88,17 @@ class MathSession(models.Model):
 
 
 class FlashCard(models.Model):
+    """ FlashCard
+    Model for a generic flashcard with text on the front and back, that doesn't
+    have a solvable math fact on it. Useful for memorizing things.
+    """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     front_text = models.TextField()
     back_text = models.TextField()
+
+    category = models.CharField(max_length=64)
 
     def __str__(self):
         return f"{self.front_text}"

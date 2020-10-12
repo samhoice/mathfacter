@@ -1,16 +1,18 @@
 # from django.shortcuts import render
 
+import random
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Rule, Calculation, Problem
+from .models import Rule, Calculation, Problem, FlashCard
 from .serializers import (
     UserSerializer,
     QuestionSerializer,
     RuleSerializer,
     CalculationSerializer,
+    FlashCardSerializer,
 )
 
 
@@ -54,4 +56,21 @@ class ProblemViewSet(viewsets.ModelViewSet):
 
         # should make this read only somehow...
         serializer = self.get_serializer(problem)
+        return Response(serializer.data)
+
+
+class FlashCardViewSet(viewsets.ModelViewSet):
+    queryset = FlashCard.objects.all()
+    serializer_class = FlashCardSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return FlashCard.objects.filter(user=self.request.user)
+
+    @action(detail=False, methods=["get"])
+    def draw(self, request):
+        # FlashCard.objects.filter
+        card_ids = self.queryset.values_list("id", flat=True)
+        card = random.choice(card_ids)
+        serializer = self.get_serializer(self.queryset.get(pk=card))
         return Response(serializer.data)

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Rule, Calculation, Problem
+from .models import Rule, Calculation, Problem, FlashCard
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -44,3 +44,10 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
         instance.save()
 
         return instance
+
+
+class FlashCardSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = FlashCard
+        fields = ["front_text", "back_text", "category"]
+        read_only_fields = ["front_text", "back_text", "category"]

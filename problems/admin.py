@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Rule, Calculation, Problem, MathSession
+from .models import Rule, Calculation, Problem, MathSession, FlashCard
 
 # Register your models here.
 
@@ -44,3 +44,10 @@ class CalculationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Calculation, CalculationAdmin)
+
+
+class FlashCardAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "category"]
+
+
+admin.site.register(FlashCard, FlashCardAdmin)
