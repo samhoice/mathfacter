@@ -2,6 +2,7 @@
 
 import random
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import action
@@ -24,6 +25,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by("-date_joined")
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=False, methods=["get"])
+    def me(self, request):
+        user = request.user
+        print(request.user)
+
+        serializer = self.get_serializer(user)
+        return Response(serializer.data)
 
 
 class RuleViewSet(viewsets.ModelViewSet):
