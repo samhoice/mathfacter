@@ -24,6 +24,7 @@ router.register(r"rules", views.RuleViewSet)
 router.register(r"questions", views.CalculationViewSet)
 router.register(r"problems", views.ProblemViewSet)
 router.register(r"cards", views.FlashCardViewSet)
+router.register(r"category", views.CategoryViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),

@@ -7,13 +7,14 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Rule, Calculation, Problem, FlashCard
+from .models import Rule, Calculation, Problem, FlashCard, Category
 from .serializers import (
     UserSerializer,
     QuestionSerializer,
     RuleSerializer,
     CalculationSerializer,
     FlashCardSerializer,
+    CategorySerializer,
 )
 
 
@@ -68,13 +69,25 @@ class ProblemViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
 class FlashCardViewSet(viewsets.ModelViewSet):
     queryset = FlashCard.objects.all()
     serializer_class = FlashCardSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return FlashCard.objects.filter(user=self.request.user)
+        return FlashCard.objects.filter(users=self.request.user)
 
     @action(detail=False, methods=["get"])
     def draw(self, request):

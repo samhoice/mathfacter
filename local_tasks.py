@@ -1,9 +1,44 @@
 from invoke import task
 
 
+# create your local tasks here
+# these will be added by tasks.py
 @task
-def docker_manage(c, cmd):
-    c.run("docker-compose run web python3 manage.py {}".format(cmd), pty=True)
+def build(c, service=""):
+    c.run(f"docker-compose --env-file .env -f docker-compose.yml {service} build")
+
+
+@task
+def up(c, service=None):
+    if service:
+        c.run(
+            f"docker-compose --env-file .env -f docker-compose.yml restart {service}",
+            pty=True,
+        )
+    else:
+        c.run("docker-compose --env-file .env -f docker-compose.yml up", pty=True)
+
+
+@task
+def down(c, service=""):
+    if service:
+        c.run(f"docker-compose --env-file .env -f docker-compose.yml stop {service}")
+    else:
+        c.run("docker-compose --env-file .env -f docker-compose.yml down")
+
+
+@task
+def manage(c, cmd):
+    c.run(
+        f"docker-compose --env-file .env -f docker-compose.yml exec web python manage.py {cmd}",
+        pty=True,
+    )
+
+
+@task
+def test(c, service):
+    opt = f"{service}"
+    print(opt)
 
 
 @task

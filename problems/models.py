@@ -89,6 +89,7 @@ class MathSession(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -100,7 +101,8 @@ class FlashCard(models.Model):
     have a solvable math fact on it. Useful for memorizing things.
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    users = models.ManyToManyField(User)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     front_text = models.TextField()
