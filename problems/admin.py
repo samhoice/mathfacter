@@ -49,7 +49,7 @@ admin.site.register(Category)
 
 
 class FlashCardAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "category"]
+    list_display = ["__str__", "category", "user_str"]
 
 
 admin.site.register(FlashCard, FlashCardAdmin)

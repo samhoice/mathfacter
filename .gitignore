@@ -10,3 +10,5 @@ deploy
 tasks.py
 ansible.cfg
 requirements/deploy.txt
+
+tags

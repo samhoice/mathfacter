@@ -110,3 +110,6 @@ class FlashCard(models.Model):
 
     def __str__(self):
         return f"{self.front_text}"
+
+    def user_str(self):
+        return ", ".join([u.__str__() for u in self.users.all()[0:3]])

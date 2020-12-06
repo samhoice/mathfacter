@@ -36,6 +36,11 @@ def manage(c, cmd):
 
 
 @task
+def gen_tags(c):
+    c.run("ctags -R --fields=+l --languages=python --python-kinds=-iv ./ $VIRTUAL_ENV/")
+
+
+@task
 def test(c, service):
     opt = f"{service}"
     print(opt)

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from django.shortcuts import get_object_or_404
 
 from .models import Rule, Calculation, Problem, FlashCard, Category
 
@@ -61,7 +62,19 @@ class FlashCardSerializer(serializers.HyperlinkedModelSerializer):
         model = FlashCard
         fields = ["front_text", "back_text", "category"]
 
-    def create(self, instance, validated_data):
-        super(FlashCardSerializer, self).create(instance, **validated_data)
+    def create(self, validated_data):
+        # This seems like the long way around somehow?
+        ctx = self.context
+        request = ctx["request"]
 
-        instance.users.add(self.request.user)
+        c = validated_data.pop("category")
+        fc = FlashCard(**validated_data)
+
+        cat = get_object_or_404(Category, user=request.user, name=c["name"])
+
+        fc.category = cat
+        fc.save()
+
+        fc.users.add(request.user)
+
+        return fc

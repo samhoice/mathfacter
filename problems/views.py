@@ -82,7 +82,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class FlashCardViewSet(viewsets.ModelViewSet):
-    queryset = FlashCard.objects.all()
+    queryset = FlashCard.objects.none()
     serializer_class = FlashCardSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -92,7 +92,8 @@ class FlashCardViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["get"])
     def draw(self, request):
         # FlashCard.objects.filter
-        card_ids = self.queryset.values_list("id", flat=True)
+        qs = self.get_queryset()
+        card_ids = qs.values_list("id", flat=True)
         card = random.choice(card_ids)
-        serializer = self.get_serializer(self.queryset.get(pk=card))
+        serializer = self.get_serializer(qs.get(pk=card))
         return Response(serializer.data)
