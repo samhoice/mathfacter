@@ -16,6 +16,14 @@ class RuleSerializer(serializers.HyperlinkedModelSerializer):
         model = Rule
         fields = ["allowed_ops", "left_min", "left", "right_min", "right"]
 
+    def create(self, validated_data):
+        # rule = super(RuleSerializer, self).create(validated_data)
+        request = self.context["request"]
+        rule = Rule(user=request.user, **validated_data)
+        rule.save()
+
+        return rule
+
 
 class CalculationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
