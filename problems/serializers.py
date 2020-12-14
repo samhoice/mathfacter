@@ -14,7 +14,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class RuleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Rule
-        fields = ["allowed_ops", "left", "right"]
+        fields = ["allowed_ops", "left_min", "left", "right_min", "right"]
 
 
 class CalculationSerializer(serializers.HyperlinkedModelSerializer):

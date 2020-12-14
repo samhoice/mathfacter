@@ -4,13 +4,25 @@ import random
 
 
 class Rule(models.Model):
-    # for brevity, min is 0
+    """ Represents a way of generating math problems for a user
+
+    Minimum and maximum values, plus the allowed operations to apply
+    to generate a math fact.
+
+    If flip is set, the problems generated will have the option to
+    randomly swap the operands.
+    """
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=128, default="")
+
     allowed_ops = models.CharField(max_length=4)
 
     left = models.IntegerField()
-    left_exact = models.BooleanField()
+    left_min = models.IntegerField(default=0)
     right = models.IntegerField()
-    right_exact = models.BooleanField()
+    right_min = models.IntegerField(default=0)
+    flip = models.BooleanField(default=True)
 
     created = models.DateTimeField(auto_now_add=True)
 
@@ -18,9 +30,13 @@ class Rule(models.Model):
         return "{} {} {}".format(self.left, self.allowed_ops, self.right)
 
     def question_from_rule(self):
-        left = random.randint(0, self.left)
-        right = random.randint(0, self.right)
+        left = random.randint(self.left_min, self.left)
+        right = random.randint(self.right_min, self.right)
         op = random.choice(self.allowed_ops)
+
+        if self.flip:
+            if random.choice([True, False]):
+                left, right = right, left
 
         q = Calculation.objects.get_or_create(
             rule=self, operation=op, left_hand=left, right_hand=right
@@ -32,6 +48,10 @@ class Rule(models.Model):
 
 
 class Calculation(models.Model):
+    """ Represents a problem generated from a rule. This is the problem
+    to be solved
+    """
+
     rule = models.ForeignKey(
         Rule, null=True, default=None, blank=True, on_delete=models.CASCADE
     )
@@ -62,6 +82,13 @@ class Calculation(models.Model):
 
 
 class Problem(models.Model):
+    """ This is the user's calculation. It links to a 'calculation'
+    and has the user's answer.
+
+    This and calculation should probably swap names
+
+    """
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     calculation = models.ForeignKey(Calculation, on_delete=models.CASCADE)
     value = models.IntegerField(default=0)
@@ -88,6 +115,11 @@ class MathSession(models.Model):
 
 
 class Category(models.Model):
+    """ represents the category for a text/image based flashcard
+
+    Will need to allow you to only look at a single category.
+    """
+
     name = models.CharField(max_length=64)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -96,9 +128,12 @@ class Category(models.Model):
 
 
 class FlashCard(models.Model):
-    """ FlashCard
+    """ Represents a text based flashcard for memorization.
+
     Model for a generic flashcard with text on the front and back, that doesn't
     have a solvable math fact on it. Useful for memorizing things.
+
+    There's currently no facility for checking these. just for memorizing
     """
 
     # user = models.ForeignKey(User, on_delete=models.CASCADE)

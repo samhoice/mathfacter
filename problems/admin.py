@@ -7,12 +7,12 @@ from .models import Rule, Calculation, Problem, MathSession, FlashCard, Category
 
 class RuleAdmin(admin.ModelAdmin):
     list_display = [
-        "left",
-        "left_exact",
-        "right",
-        "right_exact",
-        "allowed_ops",
         "created",
+        "left_min",
+        "left",
+        "allowed_ops",
+        "right_min",
+        "right",
     ]
 
 
