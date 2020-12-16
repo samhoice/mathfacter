@@ -30,6 +30,11 @@ class Rule(models.Model):
         return "{} {} {}".format(self.left, self.allowed_ops, self.right)
 
     def question_from_rule(self):
+        """ Return a calculation object from a rule. The object will
+        be reused if possible
+
+        """
+        # randint is inclusive so this should be right without a +1
         left = random.randint(self.left_min, self.left)
         right = random.randint(self.right_min, self.right)
         op = random.choice(self.allowed_ops)
@@ -38,10 +43,12 @@ class Rule(models.Model):
             if random.choice([True, False]):
                 left, right = right, left
 
+        # Should just have a custom object creator that handles calculate
         q = Calculation.objects.get_or_create(
             rule=self, operation=op, left_hand=left, right_hand=right
         )
 
+        # TODO: only do for new objects?
         q[0].calculate()
 
         return q[0]
